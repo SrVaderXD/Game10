@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 public class Game extends Canvas implements Runnable {
@@ -13,9 +14,12 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH = 288;
 	public static int HEIGHT = 288;
 	public static int SCALE = 2;
+	public BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	public Board board;
 
 	public Game() {
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+		board = new Board();
 	}
 
 	public void tick() {
@@ -23,7 +27,23 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void render() {
-
+		BufferStrategy bs = this.getBufferStrategy();
+		if (bs == null) {
+			this.createBufferStrategy(3);
+			return;
+		}
+		
+		Graphics g = image.getGraphics();
+		
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		board.render(g);
+		
+		g = bs.getDrawGraphics();
+		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
+		
+		g.dispose();
+		bs.show();
 	}
 
 	public static void main(String[] args) {
