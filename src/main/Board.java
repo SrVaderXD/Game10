@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
@@ -15,6 +16,92 @@ public class Board {
 		for (int i = 0; i < WIDTH; i++) {
 			for (int j = 0; j < HEIGHT; j++) {
 				BOARD[i][j] = new Random().nextInt(3);
+			}
+		}
+	}
+
+	public void tick() {
+		// HORIZONTAL CHECKS
+		ArrayList<Candy> combos = new ArrayList<Candy>();
+
+		for (int j = 0; j < HEIGHT; j++) {
+			if (combos.size() == 3) {
+				for (int k = 0; k < combos.size(); k++) {
+					int xtemp = combos.get(k).x;
+					int ytemp = combos.get(k).y;
+					BOARD[xtemp][ytemp] = new Random().nextInt(3);
+				}
+				combos.clear();
+				System.out.println("SCORE!!");
+				return;
+			}
+			combos.clear();
+
+			for (int i = 0; i < WIDTH; i++) {
+				int color = BOARD[i][j];
+
+				if (combos.size() == 3) {
+					for (int k = 0; k < combos.size(); k++) {
+						int xtemp = combos.get(k).x;
+						int ytemp = combos.get(k).y;
+						BOARD[xtemp][ytemp] = new Random().nextInt(3);
+					}
+					combos.clear();
+					System.out.println("SCORE!!");
+					return;
+				}
+				if (combos.size() == 0) {
+					combos.add(new Candy(i, j, color));
+				} else if (combos.size() > 0) {
+					if (combos.get(combos.size() - 1).CANDY_TYPE == color) {
+						combos.add(new Candy(i, j, color));
+					} else {
+						combos.clear();
+						combos.add(new Candy(i, j, color));
+					}
+				}
+			}
+		}
+
+		// VERTICAL CHECKS
+		combos = new ArrayList<Candy>();
+
+		for (int i = 0; i < WIDTH; i++) {
+			if (combos.size() == 3) {
+				for (int k = 0; k < combos.size(); k++) {
+					int xtemp = combos.get(k).x;
+					int ytemp = combos.get(k).y;
+					BOARD[xtemp][ytemp] = new Random().nextInt(3);
+				}
+				combos.clear();
+				System.out.println("SCORE!!");
+				return;
+			}
+			combos.clear();
+
+			for (int j = 0; j < HEIGHT; j++) {
+				int color = BOARD[i][j];
+
+				if (combos.size() == 3) {
+					for (int k = 0; k < combos.size(); k++) {
+						int xtemp = combos.get(k).x;
+						int ytemp = combos.get(k).y;
+						BOARD[xtemp][ytemp] = new Random().nextInt(3);
+					}
+					combos.clear();
+					System.out.println("SCORE!!");
+					return;
+				}
+				if (combos.size() == 0) {
+					combos.add(new Candy(i, j, color));
+				} else if (combos.size() > 0) {
+					if (combos.get(combos.size() - 1).CANDY_TYPE == color) {
+						combos.add(new Candy(i, j, color));
+					} else {
+						combos.clear();
+						combos.add(new Candy(i, j, color));
+					}
+				}
 			}
 		}
 	}

@@ -39,6 +39,12 @@ public class Game extends Canvas implements Runnable, MouseMotionListener, Mouse
 
 			if ((iPos2 == iPos1 + 1 || iPos2 == iPos1 - 1) && jPos2 == jPos1 || jPos2 == jPos1 + 1
 					|| jPos2 == jPos1 - 1) {
+				
+				if((iPos2 >= iPos1 + 1 || iPos2 <= iPos1 - 1) && (jPos2 >= jPos1 + 1 || jPos2 <= jPos1 - 1)) {
+					System.out.println("Can't move there!!");
+					return;
+				}
+				
 				int prevCandy = Board.BOARD[iPos1][jPos1];
 				int nextCandy = Board.BOARD[iPos2][jPos2];
 				Board.BOARD[iPos1][jPos1] = nextCandy;
@@ -50,6 +56,8 @@ public class Game extends Canvas implements Runnable, MouseMotionListener, Mouse
 				System.out.println("Can't move there!!");
 			}
 		}
+		
+		board.tick();
 	}
 
 	public void render() {
