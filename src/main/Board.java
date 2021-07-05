@@ -39,6 +39,12 @@ public class Board {
 					g.setColor(Color.blue);
 					g.fillRect(i * 48 + 12, j * 48 + 12, 25, 25);
 				}
+				if (Game.selected) {
+					int iPos = Game.previousI / 48;
+					int jPos = Game.previousJ / 48;
+					g.setColor(Color.black);
+					g.drawRect(iPos * 48, jPos * 48, 48, 48);
+				}
 			}
 		}
 	}
