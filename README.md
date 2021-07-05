@@ -1,3 +1,3 @@
 # Game10
 
-A simple Crush style game.
+Learning how a Crush style game works.
