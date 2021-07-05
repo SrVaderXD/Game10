@@ -22,7 +22,7 @@ public class Game extends Canvas implements Runnable, MouseMotionListener, Mouse
 	public Board board;
 	public static boolean selected = false;
 	public static int previousI = 0, previousJ = 0, nextI = -1, nextJ = -1;
-
+	
 	public Game() {
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		this.addMouseMotionListener(this);
@@ -31,20 +31,30 @@ public class Game extends Canvas implements Runnable, MouseMotionListener, Mouse
 	}
 
 	public void tick() {
+
+		board.tick();
+
+		if (Game.previousI < 0 || Game.previousI >= Board.GRID_SIZE * Board.WIDTH || Game.previousJ < 0
+				|| Game.previousJ >= Board.GRID_SIZE * Board.HEIGHT) {
+			Game.nextI = -1;
+			Game.nextJ = -1;
+			Game.selected = false;
+		}
+
 		if (Game.selected && (Game.nextI != -1 && Game.nextJ != -1)) {
-			int iPos1 = Game.previousI / 48;
-			int jPos1 = Game.previousJ / 48;
-			int iPos2 = Game.nextI / 48;
-			int jPos2 = Game.nextJ / 48;
+			int iPos1 = Game.previousI / Board.GRID_SIZE;
+			int jPos1 = Game.previousJ / Board.GRID_SIZE;
+			int iPos2 = Game.nextI / Board.GRID_SIZE;
+			int jPos2 = Game.nextJ / Board.GRID_SIZE;
 
 			if ((iPos2 == iPos1 + 1 || iPos2 == iPos1 - 1) && jPos2 == jPos1 || jPos2 == jPos1 + 1
 					|| jPos2 == jPos1 - 1) {
-				
-				if((iPos2 >= iPos1 + 1 || iPos2 <= iPos1 - 1) && (jPos2 >= jPos1 + 1 || jPos2 <= jPos1 - 1)) {
+
+				if ((iPos2 >= iPos1 + 1 || iPos2 <= iPos1 - 1) && (jPos2 >= jPos1 + 1 || jPos2 <= jPos1 - 1)) {
 					System.out.println("Can't move there!!");
 					return;
 				}
-				
+
 				int prevCandy = Board.BOARD[iPos1][jPos1];
 				int nextCandy = Board.BOARD[iPos2][jPos2];
 				Board.BOARD[iPos1][jPos1] = nextCandy;
@@ -56,8 +66,6 @@ public class Game extends Canvas implements Runnable, MouseMotionListener, Mouse
 				System.out.println("Can't move there!!");
 			}
 		}
-		
-		board.tick();
 	}
 
 	public void render() {
@@ -112,11 +120,11 @@ public class Game extends Canvas implements Runnable, MouseMotionListener, Mouse
 	public void mouseClicked(MouseEvent e) {
 		if (!Game.selected) {
 			Game.selected = true;
-			Game.previousI = e.getX() / SCALE;
-			Game.previousJ = e.getY() / SCALE;
+			Game.previousI = e.getX() / SCALE - 24;
+			Game.previousJ = e.getY() / SCALE - 24;
 		} else {
-			Game.nextI = e.getX() / SCALE;
-			Game.nextJ = e.getY() / SCALE;
+			Game.nextI = e.getX() / SCALE - 24;
+			Game.nextJ = e.getY() / SCALE - 24;
 		}
 	}
 
